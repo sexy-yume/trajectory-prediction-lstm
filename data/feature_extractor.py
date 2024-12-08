@@ -7,7 +7,7 @@ import json
 from typing import Dict, List, Optional, Tuple
 from torch.nn.utils.rnn import pad_sequence
 
-from config.config import Config
+from ..config.config import Config
 
 class TrajectoryFeatureExtractor:
     def __init__(self, config: Config):
