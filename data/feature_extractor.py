@@ -7,7 +7,7 @@ import json
 from typing import Dict, List, Optional, Tuple
 from torch.nn.utils.rnn import pad_sequence
 
-from ..config.config import Config
+from config.config import Config
 
 class TrajectoryFeatureExtractor:
     def __init__(self, config: Config):
@@ -26,10 +26,13 @@ class TrajectoryFeatureExtractor:
     def _load_from_cache(self, cache_path: Path) -> Optional[Tuple[list, list]]:
         try:
             self.logger.info(f"Loading cached dataset... ({cache_path})")
-            cached_data = torch.load(cache_path)
+            cached_data = torch.load(
+                cache_path,
+                weights_only=True  # 경고 해결을 위해 추가
+            )
             return cached_data['features'], cached_data['targets']
         except (EOFError, FileNotFoundError, RuntimeError) as e:
-            self.logger.warning(f"Cache load failed: {str(e)}")
+            self.logger.info(f"Cache file not found. Will create new cache after processing.")  # warning -> info
             return None
 
     def _save_to_cache(self, cache_path: Path, features: list, targets: list):
@@ -40,8 +43,9 @@ class TrajectoryFeatureExtractor:
             'window_size': self.window_size,
             'cache_version': '1.0'
         }
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
         torch.save(cache_data, cache_path)
-
+        
     def compute_velocity_changes(self, velocities: np.ndarray) -> np.ndarray:
         velocity_diff = np.diff(velocities, axis=0)
         return np.concatenate([[0], velocity_diff])
