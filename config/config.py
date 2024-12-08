@@ -5,6 +5,14 @@ from typing import Optional
 import logging
 
 @dataclass
+class PathConfig:
+    model_dir: Path
+    cache_dir: Path
+    data_dir: Path
+    data_file: str
+    data_path: str
+    
+@dataclass
 class ModelConfig:
     input_size: int
     hidden_size: int
@@ -43,6 +51,21 @@ class TrainingConfig:
             raise ValueError("patience must be positive")
         if self.min_delta <= 0:
             raise ValueError("min_delta must be positive")
+        
+        self.model_dir = Path(self.model_dir)
+        self.cache_dir = Path(self.cache_dir)
+        self.data_dir = Path(self.data_dir)
+        self.data_path = Path(self.data_path)
+        
+        self.model_dir.mkdir(parents=True, exist_ok=True)
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+        
+        if not self.data_path.exists():
+            raise FileNotFoundError(f"Data file not found: {self.data_path}")
+        
+        if not str(self.data_path).startswith(str(self.data_dir)):
+            raise ValueError(f"Data file must be in data_dir: {self.data_dir}")
 
 @dataclass
 class HardwareConfig:
@@ -75,7 +98,7 @@ class LoggingConfig:
     project_name: str
     wandb_enabled: bool
     log_level: str
-    log_file: str
+    log_file: Optional[str]
 
     def __post_init__(self):
         valid_levels = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
