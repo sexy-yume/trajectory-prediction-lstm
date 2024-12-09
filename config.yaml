@@ -1,0 +1,35 @@
+model:
+  input_size: 60
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.1
+
+
+training:
+  batch_size: 64
+  num_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 1e-5
+  patience: 10
+  min_delta: 1e-4
+
+hardware:
+  device: "cuda"
+  num_workers: 4
+
+paths:
+  model_dir: "trajectory_model"
+  cache_dir: "dataset_cache"
+  data_dir: "dataset"
+  data_file: "combined_flow_data.json" 
+  data_path: "dataset/combined_flow_data.json"  
+
+logging:
+  project_name: "trajectory-prediction-lstm"
+  wandb_enabled: true
+  log_level: "INFO"
+  log_file: "training.log"
+
+features:
+  window_size: 5
+  cache_enabled: true
