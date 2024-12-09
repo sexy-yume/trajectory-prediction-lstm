@@ -13,7 +13,7 @@ from src.utils.logging import setup_logging, log_hyperparameters, log_exception
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train trajectory prediction model')
-    parser.add_argument('--config', type=str, default='config/config.yaml',
+    parser.add_argument('--config', type=str, default='config.yaml',
                       help='Path to configuration file')
     parser.add_argument('--resume', type=str, default=None,
                       help='Path to checkpoint to resume from')
