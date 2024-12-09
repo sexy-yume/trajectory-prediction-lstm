@@ -48,7 +48,7 @@ pip install -e ".[dev]"
 from trajectory_prediction import Config, TrajectoryTrainer
 
 # Load configuration
-config = Config.from_yaml('config/config.yaml')
+config = Config.from_yaml('config.yaml')
 
 # Initialize trainer
 trainer = TrajectoryTrainer(config)
