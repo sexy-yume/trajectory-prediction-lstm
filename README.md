@@ -154,7 +154,7 @@ If you use this code in your research, please cite:
 ```bibtex
 @software{trajectory_prediction_lstm,
   title = {Trajectory Prediction LSTM},
-  author = {Your Name},
+  author = {sexy-yume},
   year = {2024},
   url = {https://github.com/sexy-yume/trajectory-prediction}
 }
